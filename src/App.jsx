@@ -2,12 +2,17 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
+
+  const handleLoginUser = async () => {
+    navigate("/subadmin");
+  };
 
   return (
-    <div className="flex h-fit bg-red-900 items-center justify-center">
+    <div className="flex h-fit items-center justify-center w-full bg-slate-600">
       <div className="w-full h-full bg-white p-2 rounded-xl">
         <label
           for="admin_name"
@@ -37,6 +42,7 @@ const App = () => {
         />
         <button
           type="button"
+          onClick={handleLoginUser}
           class="text-white mt-6  bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium
         
         rounded-full text-sm px-12 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
