@@ -1,17 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsers } from "../../api/apiInterface";
+import { getAllUsers, updateUser } from "../../api/apiInterface";
 
 function AppUsersTable() {
   const [usersData, setUsersData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [formData, setFormData] = useState({ ...selectedUser });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   function openModal(user) {
     setSelectedUser(user);
+    setFormData(user);
+
     setIsOpen(true);
   }
+  const callUpdateUsersAPI = async (data) => {
+    try {
+      const updateUserResponse = await updateUser(data);
+            await callGetAllUsersAPI();
+
+      window.alert(updateUserResponse.message);
+      
+
+    } catch (error) {
+      console.error("Error creating route  data:", error);
+      alert(
+        "An error occurred while logging in. Please try again later." + error
+      );
+    }
+  };
+
+  const onUpdateUser = async (data_user) => {
+    await callUpdateUsersAPI(data_user);
+  };
 
   function closeModal() {
     setIsOpen(false);
+    setFormData(null);
+    setSelectedUser(null);
+
+
   }
 
   const callGetAllUsersAPI = async () => {
@@ -54,11 +86,9 @@ function AppUsersTable() {
               email
             </th>
             <th scope="col" class="px-6 py-3">
-              paymentMode
+              Password
             </th>
-            <th scope="col" class="px-6 py-3">
-              password
-            </th>
+           
           </tr>
         </thead>
         <tbody className="bg-white divide-gray-500 w-fit">
@@ -94,29 +124,59 @@ function AppUsersTable() {
                   {data.email || "No Email Provided"}{" "}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm  text-gray-900 border bg-[#F3F4F7] font-mono font-extralight ">
-                  {data.paymentMode || "No paymentMode Provided"}{" "}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm  text-gray-900 border bg-[#F3F4F7] font-mono font-extralight ">
                   {data.password || "No password Provided"}{" "}
                 </td>
+               
               </tr>
             ))}
         </tbody>
       </table>
       {selectedUser && (
         <div className="absolute top-0 left-0 w-full h-full bg-slate-700 bg-opacity-80 flex items-center justify-center z-10">
-          <div className="bg-white rounded-lg px-8 py-6 text-black font-mono ">
-            <h2 className="text-2xl font-bold mb-4 bg-slate-500 rounded-lg p-2 text-white">User Details</h2>
-            {/* Display all user details here */}
-            <p>
-              <strong className="font-mono">ID:</strong> {selectedUser._id}
-            </p>
-            <button
-              className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-              onClick={() => setSelectedUser(null)}
-            >
-              Close
-            </button>
+          <div className="bg-white rounded-lg px-8 py-6 text-black font-mono max-w-lg overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4 bg-slate-500 rounded-lg p-2 text-white">
+              User Details
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4">
+              {Object.entries(formData).map(([key, value]) => (
+                <div key={key} className="flex flex-col">
+                  <strong className="font-mono">{key}:</strong>
+                  {key !== "_id" ? (
+                    <input
+                      type="text"
+                      name={key}
+                      value={value || "N/A"}
+                      onChange={handleInputChange}
+                      className="border rounded p-1"
+                    />
+                  ) : (
+                    value
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-row justify-evenly">
+              <button
+                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => onUpdateUser(formData)} // Call the update function
+              >
+                UpdateUser
+              </button>
+              <button
+                className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+              <button
+                className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => onUpdateUser(formData)} // Call the update function
+              >
+                Delete User
+              </button>
+            </div>
           </div>
         </div>
       )}

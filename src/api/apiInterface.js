@@ -6,3 +6,16 @@ export const getAllUsers = async () => {
     return response;
   } catch (error) {}
 };
+export const updateUser = async (data) => {
+  try {
+    const response = await apiService("update-user", "POST",data);
+    return response;
+  } catch (error) {}
+};
+
+export const deleteUser = async (data) => {
+  try {
+    const response = await apiService("delete-user", "POST", data);
+    return response;
+  } catch (error) {}
+};
