@@ -3,7 +3,7 @@ import ccbet from "../assets/ic_ccbet.png";
 import { useState } from "react";
 import { FaHome, FaUsers } from "react-icons/fa";
 
-const SideNavBar = (onSideNavClick) => {
+const SideNavBar = ({ onSideNavClick }) => {
   // By this we can maintain state of list items which are selected
   const [selectedItemId, setSelectedItemId] = useState(null);
 
@@ -49,9 +49,7 @@ const SideNavBar = (onSideNavClick) => {
               }`}
               onClick={() => handleClick(2)}
             >
-              <FaUsers
-                className={`w-[25px] h-[25px]`}
-              />
+              <FaUsers className={`w-[25px] h-[25px]`} />
               <a className="block p-2 text-white font-mono font-extrabold rounded">
                 Users
               </a>

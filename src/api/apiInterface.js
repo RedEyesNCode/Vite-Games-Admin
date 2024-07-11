@@ -1,8 +1,8 @@
 import apiService from "./apiService";
 
-export const getUserDetail = async (loginData) => {
+export const getAllUsers = async () => {
   try {
-    const response = await apiService("get-user-detail", "POST", loginData);
+    const response = await apiService("get-all-user", "GET", );
     return response;
   } catch (error) {}
 };
