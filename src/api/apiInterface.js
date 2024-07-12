@@ -19,3 +19,4 @@ export const deleteUser = async (data) => {
     return response;
   } catch (error) {}
 };
+

@@ -1,7 +1,8 @@
 import React from "react";
 import ccbet from "../assets/ic_ccbet.png";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { FaHome, FaUsers } from "react-icons/fa";
+import { GiPayMoney } from "react-icons/gi";
 
 const SideNavBar = ({ onSideNavClick }) => {
   // By this we can maintain state of list items which are selected
@@ -10,6 +11,10 @@ const SideNavBar = ({ onSideNavClick }) => {
   const handleClick = (itemId) => {
     setSelectedItemId(itemId);
   };
+
+  useEffect(() => {
+    onSideNavClick("Home");
+  }, []);
 
   const handleSideNavClick = async (event) => {
     await onSideNavClick(event);
@@ -52,6 +57,21 @@ const SideNavBar = ({ onSideNavClick }) => {
               <FaUsers className={`w-[25px] h-[25px]`} />
               <a className="block p-2 text-white font-mono font-extrabold rounded">
                 Users
+              </a>
+            </li>
+          </ul>
+          <ul onClick={() => handleSideNavClick("Withdraw")}>
+            <li
+              className={`m-2 p-2 rounded-md items-center hover:bg-purple-500 flex flex-row ${
+                selectedItemId === 3
+                  ? "bg-slate-400 text-[20px] text-white"
+                  : ""
+              }`}
+              onClick={() => handleClick(3)}
+            >
+              <GiPayMoney className={`w-[25px] h-[25px]`} />
+              <a className="block p-2 text-white font-mono font-extrabold rounded">
+                Withdrawals
               </a>
             </li>
           </ul>

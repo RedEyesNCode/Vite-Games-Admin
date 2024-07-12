@@ -126,7 +126,9 @@ const AddUserForm = () => {
             value={formData.paymentMode}
             onChange={handleChange}
           >
-            <option value="">Select a payment mode</option>
+            <option value="GPAY">GPAY</option>
+            <option value="PHONEPE">PHONEPE</option>
+            <option value="PAYTM">PAYTM</option>
           </select>
         </div>
 
