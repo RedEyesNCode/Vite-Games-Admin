@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { registerNewUser } from "../../../api/apiInterface";
 
-const AddUserForm = () => {
+const AddUserForm = ({handleCloseForm}) => {
   const [formData, setFormData] = useState({
     fullName: "",
     telephoneNumber: "",
@@ -18,10 +19,22 @@ const AddUserForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     // Add your form submission logic here
+    const registerUserResponse = await registerNewUser(formData);
+    if(registerUserResponse.code===200){
+
+      window.alert("User Registered Successfully !. Please Refresh this page.");
+      handleCloseForm();
+
+
+    }else{
+      window.alert("User not registered !");
+    }
+
+
   };
 
   return (
@@ -135,6 +148,7 @@ const AddUserForm = () => {
         <div>
           <button
             type="submit"
+            onClick={handleSubmit}
             className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Submit

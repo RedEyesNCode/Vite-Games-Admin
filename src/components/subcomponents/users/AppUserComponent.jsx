@@ -29,7 +29,7 @@ function AppUserComponent() {
               <h2 className="text-2xl font-bold mb-4 bg-slate-800 rounded-lg p-2 text-white">
                 Add New User 
               </h2>
-              <AddUserForm/>
+              <AddUserForm handleCloseForm={closeModal}/>
 
 
 

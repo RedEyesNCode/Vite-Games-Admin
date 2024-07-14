@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllUsers, updateUser } from "../../api/apiInterface";
+import { deleteUser, getAllUsers, updateUser } from "../../api/apiInterface";
 
 function AppUsersTable() {
   const [usersData, setUsersData] = useState([]);
@@ -21,11 +21,9 @@ function AppUsersTable() {
   const callUpdateUsersAPI = async (data) => {
     try {
       const updateUserResponse = await updateUser(data);
-            await callGetAllUsersAPI();
+      await callGetAllUsersAPI();
 
       window.alert(updateUserResponse.message);
-      
-
     } catch (error) {
       console.error("Error creating route  data:", error);
       alert(
@@ -37,13 +35,23 @@ function AppUsersTable() {
   const onUpdateUser = async (data_user) => {
     await callUpdateUsersAPI(data_user);
   };
+  const onDeleteUser = async (data_user) => {
+    const rawJson = {
+      userId: data_user._id,
+    };
+    window.alert(data_user._id);
+
+    const deleteUserResponse = await deleteUser(rawJson);
+    window.alert(deleteUserResponse.message);
+
+    closeModal();
+    
+  };
 
   function closeModal() {
     setIsOpen(false);
     setFormData(null);
     setSelectedUser(null);
-
-
   }
 
   const callGetAllUsersAPI = async () => {
@@ -88,7 +96,6 @@ function AppUsersTable() {
             <th scope="col" class="px-6 py-3">
               Password
             </th>
-           
           </tr>
         </thead>
         <tbody className="bg-white divide-gray-500 w-fit">
@@ -126,7 +133,6 @@ function AppUsersTable() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm  text-gray-900 border bg-[#F3F4F7] font-mono font-extralight ">
                   {data.password || "No password Provided"}{" "}
                 </td>
-               
               </tr>
             ))}
         </tbody>
@@ -172,7 +178,7 @@ function AppUsersTable() {
               </button>
               <button
                 className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                onClick={() => onUpdateUser(formData)} // Call the update function
+                onClick={() => onDeleteUser(formData)} // Call the delete function
               >
                 Delete User
               </button>
